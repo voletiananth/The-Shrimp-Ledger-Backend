@@ -1,15 +1,15 @@
 from django.contrib.auth.models import User
 from django.db import models
-
-from theshrimpledger.utils import autoSlug
+from theshrimpledger.settings import AUTH_USER_MODEL
+from theshrimpledger.utils import auto_slug
 from transactions.models import Season
 
 
 # Create your models here.
-@autoSlug()
+@auto_slug()
 class Seed(models.Model):
     id = models.AutoField(primary_key=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, )
+    user = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
     season = models.OneToOneField(Season, on_delete=models.CASCADE, default=0)
     cost = models.DecimalField(decimal_places=2, max_digits=20)
     date_created = models.DateField(auto_now_add=True)
@@ -20,11 +20,11 @@ class Seed(models.Model):
         ordering = ['-date_created']
 
 
-@autoSlug()
+@auto_slug()
 class Medicine(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(default="", max_length=200, null=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
     quantity = models.DecimalField(decimal_places=2, max_digits=20)
     amount = models.DecimalField(decimal_places=2, max_digits=20)
     date_created = models.DateField(auto_now_add=True)
@@ -35,7 +35,7 @@ class Medicine(models.Model):
         ordering = ['-date_created']
 
 
-@autoSlug()
+@auto_slug()
 class Feed(models.Model):
     PAYMENT_CHOICES = [
         ('CH', 'Cash'),
@@ -49,8 +49,8 @@ class Feed(models.Model):
 
     id = models.AutoField(primary_key=True)
     bags = models.IntegerField()
-    user = models.ForeignKey(User, on_delete=models.CASCADE, )
-    per_cost = models.DecimalField(decimal_places=2, max_digits=20, default=0.0, null=True)
+    user = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
+    per_cost = models.DecimalField(decimal_places=2, max_digits=20, default=0.0, blank=True)
     payment_type = models.CharField(max_length=20, choices=PAYMENT_CHOICES)
     type = models.CharField(max_length=20, choices=TYPES)
     date_created = models.DateField(auto_now_add=True)
@@ -61,11 +61,11 @@ class Feed(models.Model):
         ordering = ['-date_created']
 
 
-@autoSlug()
+@auto_slug()
 class Oil(models.Model):
     id = models.AutoField(primary_key=True)
     cost = models.DecimalField(max_digits=10, decimal_places=2)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, )
+    user = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
     liters = models.DecimalField(max_digits=10, decimal_places=2)
     date_created = models.DateField(auto_now_add=True)
     slug = models.SlugField(null=True, blank=True, unique=True, )
@@ -75,12 +75,12 @@ class Oil(models.Model):
         ordering = ['-date_created']
 
 
-@autoSlug()
+@auto_slug()
 class Repair(models.Model):
     id = models.AutoField(primary_key=True)
-    title = models.CharField(max_length=200, default="", null=True)
+    title = models.CharField(max_length=200, default="", blank=True)
     cost = models.DecimalField(max_digits=20, decimal_places=2)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, )
+    user = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
     date_created = models.DateField(auto_now_add=True)
     slug = models.SlugField(null=True, blank=True, unique=True, )
 
@@ -89,12 +89,12 @@ class Repair(models.Model):
         ordering = ['-date_created']
 
 
-@autoSlug()
+@auto_slug()
 class Miscellaneous(models.Model):
     id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=200, default="", null=True)
     cost = models.DecimalField(max_digits=20, decimal_places=2)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, )
+    user = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
     date_created = models.DateField(auto_now_add=True)
     slug = models.SlugField(null=True, blank=True, unique=True, )
 
