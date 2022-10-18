@@ -30,8 +30,7 @@ class FeedSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
         amount = attrs.get("per_cost", None)
         pay_type = attrs.get("payment_type", None)
-        print(amount)
-        print(pay_type)
+       
 
         if pay_type == 'CH' and amount is None:
             raise serializers.ValidationError("Amount should not be none", code=status.HTTP_400_BAD_REQUEST)

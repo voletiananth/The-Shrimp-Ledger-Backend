@@ -8,7 +8,7 @@ class UserManager(BaseUserManager):
     # Method to save user to the database
     def save_user(self, phone_number, password, **extra_fields):
         """
-        Creates and saves a User with the given email and password.
+        Creates and saves a User with the given phone number and password.
         """
         if not phone_number:
             raise ValueError('The given phone number must be set')
